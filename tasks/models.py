@@ -16,7 +16,7 @@ class Task(models.Model):
     is_urgent = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
     due_date = models.DateField()
-    category = modles.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     assigned_profiles = models.ManyToManyField(Profile, related_name='tasks')
     files = models.ManyToManyField('TaskFile', related_name='tasks', blank=True)
 
