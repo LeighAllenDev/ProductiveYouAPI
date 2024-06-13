@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from .models import Task, Category, TaskFile
 from profiles.serializers import ProfileSerializer
 from profiles.models import Profile
+from teams.models import Team
+from teams.serializers import TeamSerializer
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,11 +27,15 @@ class TaskSerializer(serializers.ModelSerializer):
         many=True, write_only=True, queryset=TaskFile.objects.all(),
         source='files', required=False
     )
+    team = TeamSerializer(read_only=True)
+    team_id = serializers.PrimaryKeyRelatedField(
+        write_only=True, queryset=Team.objects.all(), source='team'
+    )
 
     class Meta:
         model = Task
         fields = [
             'id', 'task_name', 'task_description', 'is_urgent', 'due_date',
             'category', 'assigned_profiles', 'assigned_profiles_ids',
-            'files', 'files_ids'
+            'files', 'files_ids', 'team', 'team_id'
         ]

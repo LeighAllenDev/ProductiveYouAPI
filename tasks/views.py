@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
 from .models import Task, TaskFile, Category
 from .serializers import TaskFileSerializer, CategorySerializer, TaskSerializer
+from teams.models import Team
 
 
 class TaskListCreateView(APIView):

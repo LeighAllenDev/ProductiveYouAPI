@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from profiles.models import Profile
+from teams.models import Team
 
 
 class Category(models.Model):
@@ -8,6 +9,14 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class TaskFile(models.Model):
+    file = models.FileField(upload_to='task_files/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"File: {self.file.name}"
 
 
 class Task(models.Model):
@@ -19,15 +28,7 @@ class Task(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     assigned_profiles = models.ManyToManyField(Profile, related_name='tasks')
     files = models.ManyToManyField('TaskFile', related_name='tasks', blank=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='tasks')
 
     def __str__(self):
         return f"#{self.id} - Task: {self.task_name} | Urgent: {self.is_urgent}"
-
-
-class TaskFile(models.Model):
-    file = models.FileField(upload_to='task_files/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-
-    def __str__(self):
-        return f"File: {self.file.name}"
