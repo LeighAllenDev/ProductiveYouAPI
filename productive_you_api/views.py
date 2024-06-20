@@ -5,6 +5,21 @@ from .settings import (
     JWT_AUTH_SECURE,
 )
 
+@api_view()
+def login_view(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        refresh = RefreshToken.for_user(user)
+        response = JsonResponse({'message': 'Login successful'})
+        response.set_cookie('my-app-auth', refresh.access_token, httponly=True, samesite='None', secure=True)
+        response.set_cookie('my-refresh-token', refresh, httponly=True, samesite='None', secure=True)
+        return response
+    else:
+        return JsonResponse({'error': 'Invalid credentials'}, status=401)
+
+
 
 @api_view()
 def root_route(request):
