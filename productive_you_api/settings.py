@@ -64,7 +64,7 @@ DEBUG = 'DEV' in os.environ
 ALLOWED_HOSTS = [
     '8000-leighallend-productivey-g0aq403wfsg.ws.codeinstitute-ide.net',
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
-    'localhost'
+    'localhost', 'https://productive-you-api-d9afbaf8a80b.herokuapp.com/'
     ]
 
 
