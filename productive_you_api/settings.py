@@ -116,6 +116,10 @@ else:
          r".codeinstitute-ide.net"
      ]
 
+CORS_ALLOWED_ORIGINS = [
+    'https://3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
+]
+
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'productive_you_api.urls'
