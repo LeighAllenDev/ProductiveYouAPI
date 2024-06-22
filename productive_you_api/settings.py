@@ -108,12 +108,27 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
+if 'CLIENT_ORIGIN' in os.environ:
+    CORS_ALLOWED_ORIGINS = [
+        os.environ.get('CLIENT_ORIGIN')
+    ]
+else:
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^https://.*\.gitpod\.io$",
+        r".codeinstitute-ide.net$",
+    ]
+
+CORS_ALLOWED_ORIGINS.extend([
     'https://3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
-]
+])
 
 CORS_ALLOW_CREDENTIALS = True
+
+# Add this line to include Content-Type in allowed headers
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'Content-Type',
+]
 
 
 ROOT_URLCONF = 'productive_you_api.urls'
