@@ -43,7 +43,7 @@ if 'DEV' not in os.environ:
     ]
 
 REST_USE_JWT = True
-JWT_AUTH_SECURE = True
+JWT_AUTH_SECURE = False
 JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 JWT_AUTH_SAMESITE = 'None'
@@ -63,9 +63,10 @@ DEBUG = 'DEV' in os.environ
 
 ALLOWED_HOSTS = [
     '8000-leighallend-productivey-g0aq403wfsg.ws.codeinstitute-ide.net',
-    'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
-    'localhost', 'https://productive-you-api-d9afbaf8a80b.herokuapp.com/'
-    ]
+    'productive-you-api-d9afbaf8a80b.herokuapp.com',
+    'localhost',
+    '3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
+]
 
 
 # Application definition
@@ -107,18 +108,19 @@ MIDDLEWARE = [
 ]
 
 if 'CLIENT_ORIGIN' in os.environ:
-     CORS_ALLOWED_ORIGINS = [
-         os.environ.get('CLIENT_ORIGIN')
-     ]
+    CORS_ALLOWED_ORIGINS = [
+        os.environ.get('CLIENT_ORIGIN')
+    ]
 else:
-     CORS_ALLOWED_ORIGIN_REGEXES = [
-         r"^https://.*\.gitpod\.io$",
-         r".codeinstitute-ide.net"
-     ]
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^https://.*\.gitpod\.io$",
+        r".codeinstitute-ide.net$",
+    ]
 
-CORS_ALLOWED_ORIGINS = [
+CORS_ALLOWED_ORIGINS.extend([
     'https://3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
-]
+    'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
+])
 
 CORS_ALLOW_CREDENTIALS = True
 
