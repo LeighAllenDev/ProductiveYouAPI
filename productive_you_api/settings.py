@@ -117,12 +117,16 @@ else:
         r".codeinstitute-ide.net$",
     ]
 
+if 'CORS_ALLOWED_ORIGINS' not in locals():
+    CORS_ALLOWED_ORIGINS = []
+
 CORS_ALLOWED_ORIGINS.extend([
     'https://3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
 ])
 
 CORS_ALLOW_CREDENTIALS = True
+
 
 ROOT_URLCONF = 'productive_you_api.urls'
 
