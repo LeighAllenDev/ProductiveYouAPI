@@ -29,20 +29,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        (
-            'rest_framework.authentication.SessionAuthentication'
-            if 'DEV' in os.environ
-            else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
-        )
+        'rest_framework.authentication.SessionAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DATETIME_FORMAT': '%d %b %Y',
 }
-if 'DEV' not in os.environ:
-    REST_FRAMEWORK['DEFAULT_RENDER_CLASS'] = [
-        'rest_framework.renderers.JSONRenderer',
-    ]
 
 REST_USE_JWT = True
 JWT_AUTH_SECURE = True
@@ -52,7 +45,7 @@ JWT_AUTH_SAMESITE = 'None'
 
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'productive_you_api.serializers.CurrentUserSerializer'
-} 
+}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -109,27 +102,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = []
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://.*\.gitpod\.io$",
-    r".codeinstitute-ide.net$",
+CORS_ALLOWED_ORIGINS = [
+    'https://3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
+    'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
 ]
-
-if 'CLIENT_ORIGIN' in os.environ:
-    CORS_ALLOWED_ORIGINS = [
-        os.environ.get('CLIENT_ORIGIN')
-    ]
-else:
-    CORS_ALLOWED_ORIGINS.extend([
-        'https://3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
-        'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
-    ])
 
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'Content-Type',
+    'Authorization',
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
+    'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
+]
+
 
 
 ROOT_URLCONF = 'productive_you_api.urls'
