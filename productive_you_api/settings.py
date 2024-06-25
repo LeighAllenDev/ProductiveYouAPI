@@ -112,14 +112,13 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'Content-Type',
     'Authorization',
+    'X-CSRFToken',  # Ensure CSRF token is allowed
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
 ]
-
-
 
 ROOT_URLCONF = 'productive_you_api.urls'
 
