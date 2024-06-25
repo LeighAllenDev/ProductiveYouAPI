@@ -127,7 +127,6 @@ else:
 
 CORS_ALLOW_CREDENTIALS = True
 
-# Add this line to include Content-Type in allowed headers
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'Content-Type',
 ]
