@@ -18,15 +18,14 @@ from django.urls import path, include
 from .views import root_route, logout_route
 
 urlpatterns = [
-    path('', root_route),
-    path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
-    path('dj-rest-auth/logout/', logout_route),
-    path('dj-rest-auth/', include('dj_rest_auth.urls')),
-    path(
-        'dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')
-    ),
-    path('', include('profiles.urls')),
-    path('', include('tasks.urls')),
-    path('', include('teams.urls')),
+    path('', root_route),  # Root route
+    path('admin/', admin.site.urls),  # Django admin interface
+    path('api-auth/', include('rest_framework.urls')),  # DRF authentication endpoints
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),  # DJ Rest Auth endpoints
+    path('dj-rest-auth/logout/', logout_route),  # Custom logout route
+    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),  # Registration endpoints
+    path('profiles/', include('profiles.urls')),  # Profiles app URLs
+    path('tasks/', include('tasks.urls')),  # Tasks app URLs
+    path('teams/', include('teams.urls')),  # Teams app URLs
 ]
+
