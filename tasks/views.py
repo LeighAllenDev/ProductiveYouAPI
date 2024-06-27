@@ -7,7 +7,6 @@ from .models import Task, TaskFile, Category
 from .serializers import TaskFileSerializer, CategorySerializer, TaskSerializer
 from teams.models import Team
 
-
 class TaskListCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -16,13 +15,15 @@ class TaskListCreateView(APIView):
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
 
-    
     def post(self, request):
+        print("Request data:", request.data)
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print("Validation errors:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class TaskDetailView(APIView):
