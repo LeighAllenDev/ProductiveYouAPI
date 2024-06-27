@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
 from .models import Task, Category, TaskFile
 from profiles.serializers import ProfileSerializer
 from profiles.models import Profile
@@ -35,7 +34,7 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = [
-            'id', 'task_name', 'task_description', 'is_urgent', 'due_date',
+            'id', 'task_name', 'description', 'is_urgent', 'due_date',
             'category', 'assigned_profiles', 'assigned_profiles_ids',
             'files', 'files_ids', 'team', 'team_id'
         ]
