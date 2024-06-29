@@ -11,13 +11,13 @@ class ProfileList(APIView):
         profiles = Profile.objects.all()
         serializer = ProfileSerializer(
             profiles, many=True, context={'request': request}
-            )
+        )
         return Response(serializer.data)
-
 
 class ProfileDetail(APIView):
     serializer_class = ProfileSerializer
     permission_classes = [IsOwnerOrReadOnly]
+
     def get_object(self, pk):
         try:
             profile = Profile.objects.get(pk=pk)
