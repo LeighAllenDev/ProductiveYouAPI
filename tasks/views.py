@@ -17,7 +17,6 @@ class TaskListCreateView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        print("Request data:", request.data)
         serializer = TaskSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             task = serializer.save()
@@ -29,7 +28,6 @@ class TaskListCreateView(APIView):
                 task.files.add(task_file)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        print("Validation errors:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
