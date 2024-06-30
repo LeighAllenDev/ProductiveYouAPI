@@ -15,10 +15,18 @@ class TeamListCreateView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        member_profiles = request.data.pop('member_profiles', [])  # Extract member_profiles from request data
         serializer = TeamSerializer(data=request.data)
+        
         if serializer.is_valid():
-            serializer.save()
+            team = serializer.save()
+
+            # Now handle member_profiles and add them to the team
+            if member_profiles:
+                team.members.set(member_profiles)  # Assuming member_profiles is a list of Profile instances or IDs
+            
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TeamDetailView(APIView):
