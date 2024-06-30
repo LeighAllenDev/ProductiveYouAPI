@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -15,18 +16,12 @@ class TeamListCreateView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        member_profiles = request.data.pop('member_profiles', [])  # Extract member_profiles from request data
+        print("Incoming data:", request.data)  # Add debug statement
         serializer = TeamSerializer(data=request.data)
-        
         if serializer.is_valid():
             team = serializer.save()
-
-            # Now handle member_profiles and add them to the team
-            if member_profiles:
-                team.members.set(member_profiles)  # Assuming member_profiles is a list of Profile instances or IDs
-            
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
+        print("Errors:", serializer.errors)  # Add debug statement
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TeamDetailView(APIView):
@@ -49,6 +44,7 @@ class TeamDetailView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        print("Errors:", serializer.errors)  # Add debug statement
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
