@@ -13,7 +13,7 @@ class TaskListCreateView(APIView):
 
     def get(self, request):
         tasks = Task.objects.all()
-        serializer = TaskSerializer(tasks, many=True)
+        serializer = TaskSerializer(tasks, many=True, context={'request': request})
         return Response(serializer.data)
 
     def post(self, request):
@@ -44,7 +44,7 @@ class TaskDetailView(APIView):
 
     def get(self, request, pk):
         task = self.get_object(pk)
-        serializer = TaskSerializer(task)
+        serializer = TaskSerializer(task, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, pk):
@@ -97,12 +97,12 @@ class CategoryDetailView(APIView):
 
     def get(self, request, pk):
         category = self.get_object(pk)
-        serializer = CategorySerializer(category)
+        serializer = CategorySerializer(category, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, pk):
         category = self.get_object(pk)
-        serializer = CategorySerializer(category, data=request.data)
+        serializer = CategorySerializer(category, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
