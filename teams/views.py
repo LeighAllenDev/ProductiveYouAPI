@@ -24,6 +24,7 @@ class TeamListCreateView(APIView):
         print("Errors:", serializer.errors)  # Add debug statement
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class TeamDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
