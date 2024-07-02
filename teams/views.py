@@ -1,3 +1,4 @@
+# views.py
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -52,3 +53,21 @@ class TeamDetailView(APIView):
         team = self.get_object(pk)
         team.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class TeamJoinView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            team = Team.objects.get(pk=pk)
+        except Team.DoesNotExist:
+            raise Http404
+
+        profile = request.user.profile  # Assuming user has a one-to-one relationship with Profile
+
+        if profile in team.users.all():
+            return Response({'detail': 'You are already a member of this team.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        team.users.add(profile)
+        return Response({'detail': 'Successfully joined the team.'}, status=status.HTTP_200_OK)
