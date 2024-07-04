@@ -1,6 +1,6 @@
-from rest_framework.views import APIView
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
 from .models import Task, TaskFile, Category
@@ -36,26 +36,40 @@ class TaskListCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TaskDetailView(APIView):
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
 
-    def perform_update(self, serializer):
-        # Handle file uploads on update
-        files_data = self.request.FILES.getlist('files')
-        if files_data:
-            instance = serializer.instance
-            instance.files.clear()  # Clear existing files if new files are provided
-            for file_data in files_data:
-                task_file = TaskFile.objects.create(file=file_data)
-                instance.files.add(task_file)
-        
-        serializer.save()
+    def get_object(self, pk):
+        try:
+            return Task.objects.get(pk=pk)
+        except Task.DoesNotExist:
+            raise Http404
 
-    def delete(self, request, *args, **kwargs):
-        task = self.get_object()
-        task.files.all().delete()  # Delete associated files before deleting task
-        return super().delete(request, *args, **kwargs)
+    def get(self, request, pk):
+        task = self.get_object(pk)
+        serializer = TaskSerializer(task, context={'request': request})
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        task = self.get_object(pk)
+        serializer = TaskSerializer(task, data=request.data, context={'request': request})
+        if serializer.is_valid():
+            task = serializer.save()
+
+            # Handle file uploads
+            files_data = request.FILES.getlist('files')
+            if files_data:
+                task.files.clear()  # Clear existing files if new files are provided
+                for file_data in files_data:
+                    task_file = TaskFile.objects.create(file=file_data)
+                    task.files.add(task_file)
+
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        task = self.get_object(pk)
+        task.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class CategoryListCreateView(APIView):
     permission_classes = [IsAuthenticated]
