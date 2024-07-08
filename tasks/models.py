@@ -26,7 +26,7 @@ class Task(models.Model):
     assigned_profiles = models.ManyToManyField(Profile, related_name='tasks', blank=True)
     files = models.ManyToManyField(TaskFile, related_name='tasks', blank=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='tasks')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks', null=True, blank=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks', blank=True)
 
     def __str__(self):
         return f"#{self.id} - Task: {self.task_name} | Urgent: {self.is_urgent}"
