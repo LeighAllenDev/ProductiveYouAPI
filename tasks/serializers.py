@@ -16,7 +16,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     files = TaskFileSerializer(many=True, read_only=True)
     assigned_profiles = ProfileSerializer(many=True, read_only=True, context={'request': serializers.CurrentUserDefault()})
-    team = TeamSerializer(read_only=True) 
+    team = TeamSerializer(read_only=True)
 
     class Meta:
         model = Task
