@@ -42,34 +42,41 @@ class TaskDetailView(APIView):
         try:
             return Task.objects.get(pk=pk)
         except Task.DoesNotExist:
-            raise Http404
+            raise Http404("Task does not exist")
 
     def get(self, request, pk):
-        task = self.get_object(pk)
-        serializer = TaskSerializer(task, context={'request': request})
-        return Response(serializer.data)
+        try:
+            task = self.get_object(pk)
+            serializer = TaskSerializer(task, context={'request': request})
+            return Response(serializer.data)
+        except Http404 as e:
+            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def put(self, request, pk):
-        task = self.get_object(pk)
-        serializer = TaskSerializer(task, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            task = serializer.save()
-
-            # Handle file uploads
-            files_data = request.FILES.getlist('files')
-            if files_data:
-                task.files.clear()  # Clear existing files if new files are provided
-                for file_data in files_data:
-                    task_file = TaskFile.objects.create(file=file_data)
-                    task.files.add(task_file)
-
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            task = self.get_object(pk)
+            serializer = TaskSerializer(task, data=request.data, context={'request': request})
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Http404 as e:
+            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, pk):
-        task = self.get_object(pk)
-        task.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        try:
+            task = self.get_object(pk)
+            task.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Http404 as e:
+            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class CategoryListCreateView(APIView):
     permission_classes = [IsAuthenticated]
