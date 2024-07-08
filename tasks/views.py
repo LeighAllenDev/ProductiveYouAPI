@@ -24,7 +24,7 @@ class TaskListCreateView(APIView):
         serializer = TaskSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             profile = request.user.profile
-            task = serializer.save(team=profile.teams.first())  # Example: Assign first team from user's profile
+            task = serializer.save(user=request.user, team=profile.teams.first())  # Pass user to save method
 
             # Handle file uploads
             files_data = request.FILES.getlist('files')

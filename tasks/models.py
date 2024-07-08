@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from profiles.models import Profile
 from teams.models import Team
 
@@ -25,6 +26,13 @@ class Task(models.Model):
     assigned_profiles = models.ManyToManyField(Profile, related_name='tasks', blank=True)
     files = models.ManyToManyField(TaskFile, related_name='tasks', blank=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='tasks')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks', null=True, blank=True)
 
     def __str__(self):
         return f"#{self.id} - Task: {self.task_name} | Urgent: {self.is_urgent}"
+
+    def save(self, *args, **kwargs):
+        if not self.owner_id:
+            # Set owner to current user if not already set
+            self.owner = kwargs.pop('user', None)
+        super(Task, self).save(*args, **kwargs)
