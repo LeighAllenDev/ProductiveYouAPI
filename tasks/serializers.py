@@ -43,7 +43,8 @@ class TaskSerializer(serializers.ModelSerializer):
         task = Task.objects.create(owner=user, **validated_data)
         
         for file_data in files_data:
-            TaskFile.objects.create(file=file_data, tasks=task)
+            task_file = TaskFile.objects.create(file=file_data)
+            task.files.add(task_file)
         
         return task
 
