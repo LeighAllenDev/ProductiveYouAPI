@@ -7,115 +7,36 @@ from .models import Task, TaskFile, Category
 from .serializers import TaskSerializer, TaskFileSerializer, CategorySerializer
 from productive_you_api.permissions import IsOwnerOrReadOnly
 
-class TaskListCreateView(APIView):
+class TaskListCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = TaskSerializer
 
-    def get(self, request):
-        try:
-            profile = request.user.profile  # Retrieve user's profile
-            user_teams = profile.teams.all()  # Retrieve teams associated with the profile
-            tasks = Task.objects.filter(team__in=user_teams)
-            serializer = TaskSerializer(tasks, many=True, context={'request': request})
-            return Response(serializer.data)
-        except Profile.DoesNotExist:
-            raise Http404("Profile does not exist for this user.")
+    def get_queryset(self):
+        profile = self.request.user.profile  # Retrieve user's profile
+        user_teams = profile.teams.all()  # Retrieve teams associated with the profile
+        return Task.objects.filter(team__in=user_teams)
 
-    def post(self, request):
-        serializer = TaskSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            profile = request.user.profile
-            task = serializer.save(user=request.user, team=profile.teams.first())  # Pass user to save method
+    def perform_create(self, serializer):
+        profile = self.request.user.profile
+        task = serializer.save(owner=self.request.user, team=profile.teams.first())  # Pass user to save method
 
-            # Handle file uploads
-            files_data = request.FILES.getlist('files')
-            for file_data in files_data:
-                task_file = TaskFile.objects.create(file=file_data)
-                task.files.add(task_file)
+        # Handle file uploads
+        files_data = self.request.FILES.getlist('files')
+        for file_data in files_data:
+            task_file = TaskFile.objects.create(file=file_data)
+            task.files.add(task_file)
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class TaskDetailView(APIView):
+class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
 
-    def get_object(self, pk):
-        try:
-            return Task.objects.get(pk=pk)
-        except Task.DoesNotExist:
-            raise Http404("Task does not exist")
-
-    def get(self, request, pk):
-        try:
-            task = self.get_object(pk)
-            serializer = TaskSerializer(task, context={'request': request})
-            return Response(serializer.data)
-        except Http404 as e:
-            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    def put(self, request, pk):
-        try:
-            task = self.get_object(pk)
-            serializer = TaskSerializer(task, data=request.data, context={'request': request})
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Http404 as e:
-            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    def delete(self, request, pk):
-        try:
-            task = self.get_object(pk)
-            task.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except Http404 as e:
-            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-class CategoryListCreateView(APIView):
+class CategoryListCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
-    def get(self, request):
-        categories = Category.objects.all()
-        serializer = CategorySerializer(categories, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        serializer = CategorySerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class CategoryDetailView(APIView):
+class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-
-    def get_object(self, pk):
-        try:
-            return Category.objects.get(pk=pk)
-        except Category.DoesNotExist:
-            raise Http404
-
-    def get(self, request, pk):
-        category = self.get_object(pk)
-        serializer = CategorySerializer(category, context={'request': request})
-        return Response(serializer.data)
-
-    def put(self, request, pk):
-        category = self.get_object(pk)
-        serializer = CategorySerializer(category, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk):
-        category = self.get_object(pk)
-        category.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
