@@ -17,7 +17,7 @@ class TaskFile(models.Model):
         return f"File: {self.file.name}"
 
 class Task(models.Model):
-    task_name = models.CharField(max_length=255, unique=True)
+    task_name = models.CharField(max_length=255)
     description = models.TextField()
     is_urgent = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
@@ -25,7 +25,7 @@ class Task(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     assigned_profiles = models.ManyToManyField(Profile, related_name='tasks', blank=True)
     files = models.ManyToManyField(TaskFile, related_name='tasks', blank=True)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='tasks')
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='tasks', null=True, blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks', default=1)
 
     def __str__(self):

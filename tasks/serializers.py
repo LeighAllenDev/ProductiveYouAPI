@@ -56,10 +56,11 @@ class TaskSerializer(serializers.ModelSerializer):
         instance.completed = validated_data.get('completed', instance.completed)
         instance.due_date = validated_data.get('due_date', instance.due_date)
         instance.category = validated_data.get('category', instance.category)
+        instance.team = validated_data.get('team', instance.team)
         instance.save()
         
+        # Handle files
         existing_files = {file.id: file for file in instance.files.all()}
-        
         for file_data in files_data:
             task_file = TaskFile.objects.create(file=file_data)
             instance.files.add(task_file)
