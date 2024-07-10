@@ -8,19 +8,18 @@ from .serializers import TaskSerializer, TaskFileSerializer, CategorySerializer
 from productive_you_api.permissions import IsOwnerOrReadOnly
 
 class TaskListCreateView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = TaskSerializer
 
     def get_queryset(self):
-        profile = self.request.user.profile  # Retrieve user's profile
-        user_teams = profile.teams.all()  # Retrieve teams associated with the profile
+        profile = self.request.user.profile
+        user_teams = profile.teams.all()
         return Task.objects.filter(team__in=user_teams)
 
     def perform_create(self, serializer):
         profile = self.request.user.profile
-        task = serializer.save(owner=self.request.user, team=profile.teams.first())  # Pass user to save method
+        task = serializer.save(team=profile.teams.first())
 
-        # Handle file uploads
         files_data = self.request.FILES.getlist('files')
         for file_data in files_data:
             task_file = TaskFile.objects.create(file=file_data)
