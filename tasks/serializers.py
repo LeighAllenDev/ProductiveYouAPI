@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Task, TaskFile, Category
+from profiles.serializers import ProfileSerializer
 from teams.serializers import TeamSerializer
 
 class TaskFileSerializer(serializers.ModelSerializer):
@@ -13,19 +14,30 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class TaskSerializer(serializers.ModelSerializer):
+    owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
     files = TaskFileSerializer(many=True, read_only=True)
-    team = TeamSerializer(read_only=True)
+    team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), required=True)
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), required=True)
 
     class Meta:
         model = Task
         fields = [
             'id', 'task_name', 'description', 'is_urgent', 'completed',
-            'due_date', 'category', 'files', 'team'
+            'due_date', 'category', 'files', 'team', 'owner'
         ]
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        request = self.context.get('request')
+        if request:
+            if instance.team:
+                representation['team'] = TeamSerializer(instance.team, context={'request': request}).data
+        return representation
+
     def create(self, validated_data):
+        user = self.context['request'].user
         files_data = self.context['request'].FILES.getlist('files')
-        task = Task.objects.create(**validated_data)
+        task = Task.objects.create(owner=user, **validated_data)
         
         for file_data in files_data:
             task_file = TaskFile.objects.create(file=file_data)
@@ -44,6 +56,8 @@ class TaskSerializer(serializers.ModelSerializer):
         instance.team = validated_data.get('team', instance.team)
         instance.save()
         
+        # Handle files
+        existing_files = {file.id: file for file in instance.files.all()}
         for file_data in files_data:
             task_file = TaskFile.objects.create(file=file_data)
             instance.files.add(task_file)

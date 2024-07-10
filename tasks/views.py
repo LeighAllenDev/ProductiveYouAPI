@@ -18,9 +18,11 @@ class TaskListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         profile = self.request.user.profile
-        task = serializer.save(team=profile.teams.first())
+        serializer.save(owner=self.request.user)
 
+        # Handle file uploads
         files_data = self.request.FILES.getlist('files')
+        task = serializer.instance
         for file_data in files_data:
             task_file = TaskFile.objects.create(file=file_data)
             task.files.add(task_file)
