@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Task, TaskFile, Category
-from profiles.serializers import ProfileSerializer
+from teams.models import Team
 from teams.serializers import TeamSerializer
 
 class TaskFileSerializer(serializers.ModelSerializer):
@@ -32,17 +32,19 @@ class TaskSerializer(serializers.ModelSerializer):
         if request:
             if instance.team:
                 representation['team'] = TeamSerializer(instance.team, context={'request': request}).data
+            if instance.files:
+                representation['files'] = TaskFileSerializer(instance.files.all(), many=True, context={'request': request}).data
         return representation
 
     def create(self, validated_data):
         user = self.context['request'].user
         files_data = self.context['request'].FILES.getlist('files')
         task = Task.objects.create(owner=user, **validated_data)
-        
+
         for file_data in files_data:
             task_file = TaskFile.objects.create(file=file_data)
             task.files.add(task_file)
-        
+
         return task
 
     def update(self, instance, validated_data):
@@ -55,11 +57,11 @@ class TaskSerializer(serializers.ModelSerializer):
         instance.category = validated_data.get('category', instance.category)
         instance.team = validated_data.get('team', instance.team)
         instance.save()
-        
+
         # Handle files
         existing_files = {file.id: file for file in instance.files.all()}
         for file_data in files_data:
             task_file = TaskFile.objects.create(file=file_data)
             instance.files.add(task_file)
-        
+
         return instance

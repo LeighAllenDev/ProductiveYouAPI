@@ -1,10 +1,6 @@
-from rest_framework import generics, permissions, status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from django.http import Http404
+from rest_framework import generics, permissions
 from .models import Task, TaskFile, Category
-from .serializers import TaskSerializer, TaskFileSerializer, CategorySerializer
+from .serializers import TaskSerializer, CategorySerializer
 from productive_you_api.permissions import IsOwnerOrReadOnly
 
 class TaskListCreateView(generics.ListCreateAPIView):
@@ -18,11 +14,10 @@ class TaskListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         profile = self.request.user.profile
-        serializer.save(owner=self.request.user)
+        task = serializer.save(owner=self.request.user)
 
         # Handle file uploads
         files_data = self.request.FILES.getlist('files')
-        task = serializer.instance
         for file_data in files_data:
             task_file = TaskFile.objects.create(file=file_data)
             task.files.add(task_file)
@@ -33,11 +28,11 @@ class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TaskSerializer
 
 class CategoryListCreateView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
