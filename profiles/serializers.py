@@ -11,10 +11,6 @@ class ProfileSerializer(serializers.ModelSerializer):
             return False
         return request.user == obj.owner
 
-    def update(self, instance, validated_data):
-        validated_data.pop('owner', None)  # Ensure owner is not updated
-        return super().update(instance, validated_data)
-
     class Meta:
         model = Profile
         fields = [
