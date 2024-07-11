@@ -39,6 +39,7 @@ class TaskSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context['request'].user
         files_data = self.context['request'].FILES.getlist('files')
+        validated_data.pop('owner', None)  # Remove owner if it exists in validated_data
         task = Task.objects.create(owner=user, **validated_data)
 
         for file_data in files_data:
