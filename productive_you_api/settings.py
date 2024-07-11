@@ -54,6 +54,7 @@ ALLOWED_HOSTS = [
     'productive-you-api-d9afbaf8a80b.herokuapp.com',
     'localhost',
     '3000-leighallend-reactproduc-xjtynup7n1l.ws.codeinstitute-ide.net/',
+    'django-productiveyou-ad47263ebaed.herokuapp.com/'
 ]
 
 INSTALLED_APPS = [
