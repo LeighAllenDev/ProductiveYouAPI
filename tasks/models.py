@@ -1,5 +1,6 @@
 from django.db import models
 from teams.models import Team
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -23,6 +24,7 @@ class Task(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     files = models.ManyToManyField(TaskFile, related_name='tasks', blank=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='tasks', null=True, blank=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"#{self.id} - Task: {self.task_name} | Urgent: {self.is_urgent}"
