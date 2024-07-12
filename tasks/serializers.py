@@ -39,7 +39,7 @@ class TaskSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context['request'].user
         files_data = self.context['request'].FILES.getlist('files')
-        validated_data.pop('owner', None)  # Remove owner if it exists in validated_data
+        validated_data.pop('owner', None)
         task = Task.objects.create(owner=user, **validated_data)
 
         for file_data in files_data:
@@ -59,7 +59,6 @@ class TaskSerializer(serializers.ModelSerializer):
         instance.team = validated_data.get('team', instance.team)
         instance.save()
 
-        # Handle files
         existing_files = {file.id: file for file in instance.files.all()}
         for file_data in files_data:
             task_file = TaskFile.objects.create(file=file_data)

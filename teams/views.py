@@ -17,12 +17,12 @@ class TeamListCreateView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        print("Incoming data:", request.data)  # Add debug statement
+        print("Incoming data:", request.data)
         serializer = TeamSerializer(data=request.data)
         if serializer.is_valid():
             team = serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        print("Errors:", serializer.errors)  # Add debug statement
+        print("Errors:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -46,7 +46,7 @@ class TeamDetailView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        print("Errors:", serializer.errors)  # Add debug statement
+        print("Errors:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
@@ -64,7 +64,7 @@ class TeamJoinView(APIView):
         except Team.DoesNotExist:
             raise Http404
 
-        profile = request.user.profile  # Assuming user has a one-to-one relationship with Profile
+        profile = request.user.profile
 
         if profile in team.users.all():
             return Response({'detail': 'You are already a member of this team.'}, status=status.HTTP_400_BAD_REQUEST)

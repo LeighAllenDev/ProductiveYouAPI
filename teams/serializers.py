@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Team
 from profiles.models import Profile
-from profiles.serializers import ProfileSerializer  # Import the ProfileSerializer
+from profiles.serializers import ProfileSerializer
 
 class TeamSerializer(serializers.ModelSerializer):
     users = ProfileSerializer(many=True, read_only=True)
