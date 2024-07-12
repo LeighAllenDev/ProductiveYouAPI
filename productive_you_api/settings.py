@@ -23,7 +23,7 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [(
         'rest framework.authentication.SessionAuthentication'
-        if 'DEV' in os. environ
+        if 'DEV' in os.environ
         else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     )],
     'DEFAULT_PAGINATION_CLASS':
