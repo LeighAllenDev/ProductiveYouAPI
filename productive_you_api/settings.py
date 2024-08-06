@@ -59,9 +59,9 @@ ALLOWED_HOSTS = [
     '8000-leighallend-productivey-g0aq403wfsg.ws.codeinstitute-ide.net',
     'productive-you-api-d9afbaf8a80b.herokuapp.com',
     'localhost',
-    '3000-leighallend-reactproduc-xjtynup7n1l.ws.codeinstitute-ide.net',
+    '3000-leighallend-reactproduc-hcuvnz84odq.ws.codeinstitute-ide.net',
     'productive-you-api-d9afbaf8a80b.herokuapp.com',
-    'https://django-productiveyou-ad47263ebaed.herokuapp.com'
+    'django-productiveyou-ad47263ebaed.herokuapp.com'
 ]
 
 INSTALLED_APPS = [
@@ -111,7 +111,8 @@ CORS_ALLOWED_ORIGINS = [
     'https://3000-leighallend-reactproduc-xjtynup7n1l.ws.codeinstitute-ide.net',
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://django-productiveyou-ad47263ebaed.herokuapp.com',
-    'https://react-productive-you-bad00f997bac.herokuapp.com'
+    'https://react-productive-you-bad00f997bac.herokuapp.com',
+    'https://3000-leighallend-reactproduc-hcuvnz84odq.ws.codeinstitute-ide.net'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -127,7 +128,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://3000-leighallend-reactproduc-xjtynup7n1l.ws.codeinstitute-ide.net',
     'https://django-productiveyou-ad47263ebaed.herokuapp.com',
-    'https://react-productive-you-bad00f997bac.herokuapp.com'
+    'https://react-productive-you-bad00f997bac.herokuapp.com',
 ]
 
 ROOT_URLCONF = 'productive_you_api.urls'
