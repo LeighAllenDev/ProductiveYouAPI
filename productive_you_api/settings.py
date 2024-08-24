@@ -56,7 +56,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = 'DEV' in os.environ
 
 ALLOWED_HOSTS = [
-    '8000-leighallend-productivey-g0aq403wfsg.ws.codeinstitute-ide.net',
+    '8000-leighallend-productivey-35s116c7fwm.ws.codeinstitute-ide.net',
     'productive-you-api-d9afbaf8a80b.herokuapp.com',
     'localhost',
     '3000-leighallend-reactproduc-hcuvnz84odq.ws.codeinstitute-ide.net',
@@ -100,15 +100,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CSRF_COOKIE_SECURE = True  # Ensure CSRF cookie is only sent over HTTPS
-CSRF_COOKIE_SAMESITE = 'None'  # Allow CSRF cookie to be sent with cross-site requests
-CSRF_COOKIE_DOMAIN = '.ws.codeinstitute-ide.net'  # Replace with your actual domain
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_DOMAIN = '.herokuapp.com'
 
 
 CORS_ALLOWED_ORIGINS = [
     'https://3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
-    'https://3000-leighallend-reactproduc-xjtynup7n1l.ws.codeinstitute-ide.net',
+    'https://3000-leighallend-reactproduc-hk174nhnmq9.ws.codeinstitute-ide.net',
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://django-productiveyou-ad47263ebaed.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
@@ -129,7 +129,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://3000-leighallend-reactproduc-xjtynup7n1l.ws.codeinstitute-ide.net',
     'https://django-productiveyou-ad47263ebaed.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
-    'https://3000-leighallend-reactproduc-hcuvnz84odq.ws.codeinstitute-ide.net',
+    'https://3000-leighallend-reactproduc-hcuvnz84odq.ws.codeinstitute-ide.net'
 ]
 
 ROOT_URLCONF = 'productive_you_api.urls'
