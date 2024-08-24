@@ -20,6 +20,7 @@ This is all achieved through the use of the Rest Framework to create a complete 
 4. [Code Standards and Practices](#code-standards-and-practices)
 5. [Testing and Version Control](#testing-and-version-control)
     * [Manual Testing](#manual-testing)
+    * [Additional Testing](#additional-testing)
     * [Version Control](#version-control)
 6. [Deployment](#deployment-to-heroku)
 7. [Credits](#credits)
@@ -96,7 +97,15 @@ Testing the API can be managed in a few ways, through the django terminal comman
 
 As well as this, when the live server is running you can access all of the api endpoints and see if they are holding the correct information, and any error messages will be shown here. When deployed to heroku this also works and it will load raw JSON data as touched on above in the example.
 
-Django has an admin page, after creating a super user I am able to load the backend each time I add a model to make sure that it is visible and working in the admin panel. 
+Django has an admin page, after creating a super user I am able to load the backend each time I add a model to make sure that it is visible and working in the admin panel.
+
+### Additional Testing
+When deploying the front-end and back-end projects to **Heroku**, there was an issue in the settings.py file which prevented users being able to login or register to the app. after testing considerably, this turned out to be due to an issue with the way that I had set up the CORS headers. The cookie token was linking to the **IDE** - *codeinstitute-ide.net* whereas it should have been linking to the deployed site *herokuapp.com*. As well as this I also failed to set the deployed front-end app domain as a trusted cors origin. which basically resulted in the site being unusable. This issue has now been resolved and the front-end correctly connects to this backend api as intended.
+
+I have tested this on the front end by:
+* Registering multiple accounts on the site - this has shown that authentication is working, once coupled with testing the ability to log in and sign out with the newly created accounts.
+* Changing the users profile information and images, this has confirmed that the cloudinary database is working correctly as it is retaining the image. However the default image from cloudinary won't display, and currently to **get the updated image to display in the navbar the user has to log out and in again**.
+* Adding and deleting teams and categories to make sure these are being updated in the backend and changes are being saved to the database.
 
 ### Version Control
 During the development of this API project I have continually used GitHub and Git for version control. With every project, there are huge benefits to using version control such as Git when developing a project, some examples are:
