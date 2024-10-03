@@ -21,20 +21,21 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # BASE_DIR = Path(__file__).resolve().parent.parent  # Already defined above
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [(
-        'rest framework.authentication.SessionAuthentication'
-        if 'DEV' in os.environ
-        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
-    )],
-    'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DATETIME_FORMAT': '%d %b %Y',
 }
+
 if 'DEV' not in os.environ:
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = [
         'rest_framework.renderers.JSONRenderer',
     ]
+
 
 REST_USE_JWT = True
 JWT_AUTH_SECURE = True
@@ -56,12 +57,13 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = 'DEV' in os.environ
 
 ALLOWED_HOSTS = [
-    '8000-leighallend-productivey-35s116c7fwm.ws.codeinstitute-ide.net',
     'productive-you-api-d9afbaf8a80b.herokuapp.com',
     'localhost',
-    '3000-leighallend-reactproduc-hcuvnz84odq.ws.codeinstitute-ide.net',
-    'productive-you-api-d9afbaf8a80b.herokuapp.com',
-    'django-productiveyou-ad47263ebaed.herokuapp.com'
+    '127.0.0.1',
+    'http://127.0.0.1:8000',
+    'django-productiveyou-ad47263ebaed.herokuapp.com',
+    'https://3000-leighallend-reactproduc-1i7zzfx2tx6.ws.codeinstitute-ide.net',
+    '8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net'
 ]
 
 INSTALLED_APPS = [
@@ -100,19 +102,18 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_DOMAIN = '.herokuapp.com'
 
 
 CORS_ALLOWED_ORIGINS = [
-    'https://3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
-    'https://3000-leighallend-reactproduc-hk174nhnmq9.ws.codeinstitute-ide.net',
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://django-productiveyou-ad47263ebaed.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
-    'https://3000-leighallend-reactproduc-hcuvnz84odq.ws.codeinstitute-ide.net'
+    'https://8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
+    'https://3000-leighallend-reactproduc-1i7zzfx2tx6.ws.codeinstitute-ide.net'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -129,7 +130,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://3000-leighallend-reactproduc-xjtynup7n1l.ws.codeinstitute-ide.net',
     'https://django-productiveyou-ad47263ebaed.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
-    'https://3000-leighallend-reactproduc-hcuvnz84odq.ws.codeinstitute-ide.net'
+    'https://3000-leighallend-reactproduc-1i7zzfx2tx6.ws.codeinstitute-ide.net'
+    'https://8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net'
 ]
 
 ROOT_URLCONF = 'productive_you_api.urls'
