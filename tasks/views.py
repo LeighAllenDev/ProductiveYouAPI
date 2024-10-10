@@ -2,12 +2,12 @@ from rest_framework import generics, permissions
 from .models import Task, TaskFile, Category
 from .serializers import TaskSerializer, CategorySerializer
 from productive_you_api.permissions import IsOwnerOrReadOnly
-from .pagination import CustomPaginstaion
+from .pagination import CustomPagination
 
 class TaskListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = TaskSerializer
-    pagination_class = CustomPaginstaion
+    pagination_class = CustomPagination
 
     def get_queryset(self):
         profile = self.request.user.profile
