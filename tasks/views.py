@@ -12,7 +12,7 @@ class TaskListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         profile = self.request.user.profile
         user_teams = profile.teams.all()
-        return Task.objects.filter(team__in=user_teams)
+        return Task.objects.filter(team__in=user_teams).order_by('-id')
 
     def perform_create(self, serializer):
         profile = self.request.user.profile
