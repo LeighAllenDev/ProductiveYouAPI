@@ -59,7 +59,6 @@ class TaskSerializer(serializers.ModelSerializer):
         instance.team = validated_data.get('team', instance.team)
         instance.save()
 
-        existing_files = {file.id: file for file in instance.files.all()}
         for file_data in files_data:
             task_file = TaskFile.objects.create(file=file_data)
             instance.files.add(task_file)
