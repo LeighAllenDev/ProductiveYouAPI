@@ -14,7 +14,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class TaskSerializer(serializers.ModelSerializer):
-    owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    owner = serializers.ReadOnlyField(source='owner.id')
     files = TaskFileSerializer(many=True, read_only=True)
     team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), required=True)
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), required=True)
