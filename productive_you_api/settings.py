@@ -63,7 +63,8 @@ ALLOWED_HOSTS = [
     'http://127.0.0.1:8000',
     'django-productiveyou-ad47263ebaed.herokuapp.com',
     '8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
-    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net'
+    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
+    '8000-leighallend-productivey-ekms8xyqa6y.ws.codeinstitute-ide.net'
 ]
 
 INSTALLED_APPS = [
