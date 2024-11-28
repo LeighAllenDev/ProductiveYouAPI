@@ -1,8 +1,10 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
 from .models import Task, TaskFile, Category
 from .serializers import TaskSerializer, CategorySerializer
 from productive_you_api.permissions import IsOwnerOrReadOnly
 from .pagination import CustomPagination
+
 
 class TaskListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -15,7 +17,6 @@ class TaskListCreateView(generics.ListCreateAPIView):
         return Task.objects.filter(team__in=user_teams).order_by('-id')
 
     def perform_create(self, serializer):
-        profile = self.request.user.profile
         task = serializer.save(owner=self.request.user)
 
         files_data = self.request.FILES.getlist('files')
@@ -23,15 +24,40 @@ class TaskListCreateView(generics.ListCreateAPIView):
             task_file = TaskFile.objects.create(file=file_data)
             task.files.add(task_file)
 
+
 class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+
+    def update(self, request, *args, **kwargs):
+        """Override to allow marking tasks complete/incomplete only for team members."""
+        instance = self.get_object()
+
+        # Check if the request user is in the team assigned to the task
+        if instance.team and self.request.user.profile in instance.team.users.all():
+            if 'completed' in request.data:
+                # Allow marking tasks as complete/incomplete
+                instance.completed = request.data['completed']
+                instance.save()
+                serializer = self.get_serializer(instance)
+                return Response(serializer.data)
+        
+        # Restrict full edits to the task owner
+        if instance.owner != request.user:
+            return Response(
+                {"detail": "You do not have permission to edit this task."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        return super().update(request, *args, **kwargs)
+
 
 class CategoryListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
 
 class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
