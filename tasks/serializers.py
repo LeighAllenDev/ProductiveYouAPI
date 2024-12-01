@@ -49,7 +49,8 @@ class TaskSerializer(serializers.ModelSerializer):
         return task
 
     def update(self, instance, validated_data):
-        files_data = self.context['request'].FILES.getlist('files')
+        files_data = self.context['request'].FILES.getlist('files') if self.context['request'].FILES else []
+
         instance.task_name = validated_data.get('task_name', instance.task_name)
         instance.description = validated_data.get('description', instance.description)
         instance.is_urgent = validated_data.get('is_urgent', instance.is_urgent)
