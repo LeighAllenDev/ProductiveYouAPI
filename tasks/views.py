@@ -26,24 +26,21 @@ class TaskListCreateView(generics.ListCreateAPIView):
 
 
 class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
     def update(self, request, *args, **kwargs):
-        """Override to allow marking tasks complete/incomplete only for team members."""
+        """Override to allow marking tasks as complete/incomplete only for team members."""
         instance = self.get_object()
 
-        # Check if the request user is in the team assigned to the task
-        if instance.team and self.request.user.profile in instance.team.users.all():
+        if instance.team and request.user.profile in instance.team.users.all():
             if 'completed' in request.data:
-                # Allow marking tasks as complete/incomplete
                 instance.completed = request.data['completed']
                 instance.save()
                 serializer = self.get_serializer(instance)
                 return Response(serializer.data)
-        
-        # Restrict full edits to the task owner
+
         if instance.owner != request.user:
             return Response(
                 {"detail": "You do not have permission to edit this task."},
