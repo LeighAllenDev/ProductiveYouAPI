@@ -16,8 +16,8 @@ class CategorySerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
     files = TaskFileSerializer(many=True, read_only=True)
-    team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), required=True)
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), required=True)
+    team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), required=True)
 
     class Meta:
         model = Task
@@ -27,18 +27,25 @@ class TaskSerializer(serializers.ModelSerializer):
         ]
 
     def to_representation(self, instance):
+        """
+        Override to_representation to serialize category and team using their respective serializers.
+        """
         representation = super().to_representation(instance)
         request = self.context.get('request')
+
         if request:
+            if instance.category:
+                representation['category'] = CategorySerializer(instance.category, context={'request': request}).data
             if instance.team:
                 representation['team'] = TeamSerializer(instance.team, context={'request': request}).data
-            if instance.files:
+            if instance.files.exists():
                 representation['files'] = TaskFileSerializer(instance.files.all(), many=True, context={'request': request}).data
+
         return representation
 
     def create(self, validated_data):
         user = self.context['request'].user
-        files_data = self.context['request'].FILES.getlist('files')
+        files_data = self.context['request'].FILES.getlist('files') if self.context['request'].FILES else []
         validated_data.pop('owner', None)
         task = Task.objects.create(owner=user, **validated_data)
 
@@ -50,7 +57,6 @@ class TaskSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         files_data = self.context['request'].FILES.getlist('files') if self.context['request'].FILES else []
-
         instance.task_name = validated_data.get('task_name', instance.task_name)
         instance.description = validated_data.get('description', instance.description)
         instance.is_urgent = validated_data.get('is_urgent', instance.is_urgent)
