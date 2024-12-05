@@ -113,6 +113,7 @@ CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_DOMAIN = 'productive-you-api-d9afbaf8a80b.herokuapp.com'
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_DOMAIN = 'productive-you-api-d9afbaf8a80b.herokuapp.com'
 
 CORS_ALLOWED_ORIGINS = [
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
