@@ -119,7 +119,7 @@ SESSION_COOKIE_DOMAIN = 'productive-you-api-d9afbaf8a80b.herokuapp.com'
 CORS_ALLOWED_ORIGINS = [
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
-    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net/',
+    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = list(default_headers) + ['Content-Type', 'Authorization', 'X-CSRFToken']
