@@ -97,7 +97,7 @@ JWT_AUTH_SECURE = True
 JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 JWT_AUTH_SAMESITE = 'None'
-REST_SESSION_LOGIN = False
+REST_SESSION_LOGIN = True
 
 # Password Validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -127,7 +127,6 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = list(default_headers) + ['Content-Type', 'Authorization', 'X-CSRFToken']
 CSRF_TRUSTED_ORIGINS = [
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
-    'https://django-productiveyou-ad47263ebaed.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
     'https://8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
     'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
