@@ -20,8 +20,9 @@ ALLOWED_HOSTS = [
     'http://127.0.0.1:8000',
     'django-productiveyou-ad47263ebaed.herokuapp.com',
     '8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
-    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
-    '8000-leighallend-productivey-ekms8xyqa6y.ws.codeinstitute-ide.net'
+    '3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
+    '8000-leighallend-productivey-ekms8xyqa6y.ws.codeinstitute-ide.net',
+    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net'
 ]
 
 # Installed Applications
@@ -117,11 +118,8 @@ SESSION_COOKIE_DOMAIN = 'productive-you-api-d9afbaf8a80b.herokuapp.com'
 
 CORS_ALLOWED_ORIGINS = [
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
-    'https://django-productiveyou-ad47263ebaed.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
-    'https://8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
-    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
-    'https://react-productive-you-bad00f997bac.herokuapp.com'
+    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net/',
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = list(default_headers) + ['Content-Type', 'Authorization', 'X-CSRFToken']
@@ -129,8 +127,6 @@ CSRF_TRUSTED_ORIGINS = [
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
     'https://8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
-    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
-    'https://react-productive-you-bad00f997bac.herokuapp.com',
     'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net/'
 ]
 
