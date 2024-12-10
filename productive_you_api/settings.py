@@ -103,9 +103,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_DOMAIN = '.herokuapp.com'
+CSRF_COOKIE_DOMAIN = 'productive-you-api-d9afbaf8a80b.herokuapp.com'
 
 
 CORS_ALLOWED_ORIGINS = [
