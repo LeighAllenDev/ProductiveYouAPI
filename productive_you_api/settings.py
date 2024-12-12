@@ -17,9 +17,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-# BASE_DIR = Path(__file__).resolve().parent.parent  # Already defined above
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
@@ -36,7 +33,6 @@ if 'DEV' not in os.environ:
         'rest_framework.renderers.JSONRenderer',
     ]
 
-
 REST_USE_JWT = True
 JWT_AUTH_SECURE = True
 JWT_AUTH_COOKIE = 'my-app-auth'
@@ -47,13 +43,8 @@ REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'productive_you_api.serializers.CurrentUserSerializer'
 }
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'DEV' in os.environ
 
 ALLOWED_HOSTS = [
@@ -92,6 +83,7 @@ INSTALLED_APPS = [
 ]
 
 SITE_ID = 1
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -103,18 +95,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_DOMAIN = 'productive-you-api-d9afbaf8a80b.herokuapp.com'
-
+CSRF_COOKIE_DOMAIN = '.herokuapp.com'
 
 CORS_ALLOWED_ORIGINS = [
-    'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://django-productiveyou-ad47263ebaed.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
     'https://8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
-    'https://3000-leighallend-reactproduc-1i7zzfx2tx6.ws.codeinstitute-ide.net',
     'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net'
 ]
 
@@ -134,7 +123,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://react-productive-you-bad00f997bac.herokuapp.com',
     'https://3000-leighallend-reactproduc-1i7zzfx2tx6.ws.codeinstitute-ide.net',
     'https://8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
-    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net'
+    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
 ]
 
 ROOT_URLCONF = 'productive_you_api.urls'
@@ -170,32 +159,19 @@ else:
     }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 STATIC_URL = '/static/'
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = [
