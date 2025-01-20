@@ -43,11 +43,16 @@ def logout_route(request):
     """
     Logs out the user by clearing the authentication and refresh token cookies.
     """
-    response = Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
+    response = Response(
+        {"detail": "Successfully logged out"}, 
+        status=status.HTTP_200_OK
+    )
     
     # Clear the authentication token cookie
     response.delete_cookie(
         key=settings.JWT_AUTH_COOKIE,
+        path='/',
+        domain=settings.CSRF_COOKIE_DOMAIN,
         samesite=settings.JWT_AUTH_SAMESITE,
         secure=settings.JWT_AUTH_SECURE,
     )
@@ -55,11 +60,17 @@ def logout_route(request):
     # Clear the refresh token cookie
     response.delete_cookie(
         key=settings.JWT_AUTH_REFRESH_COOKIE,
+        path='/',
+        domain=settings.CSRF_COOKIE_DOMAIN,
         samesite=settings.JWT_AUTH_SAMESITE,
         secure=settings.JWT_AUTH_SECURE,
     )
     
-    # Clear CSRF cookie if necessary
-    response.delete_cookie('csrftoken')
+    # Clear CSRF cookie
+    response.delete_cookie(
+        key='csrftoken',
+        path='/',
+        domain=settings.CSRF_COOKIE_DOMAIN,
+    )
     
     return response
