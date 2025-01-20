@@ -10,7 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
-    path('dj-rest-auth/logout/', LogoutView.as_view(), name='rest_logout'),
+    path('dj-rest-auth/logout/', LogoutView.as_view(), name='logout'),
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     path('profiles/', include('profiles.urls')),
     path('api/', include('tasks.urls')),
