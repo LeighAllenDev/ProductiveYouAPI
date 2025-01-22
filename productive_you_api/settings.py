@@ -108,7 +108,7 @@ CORS_ALLOWED_ORIGINS = [
     'https://django-productiveyou-ad47263ebaed.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
     'https://8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
-    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net'
+    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net/'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -120,10 +120,9 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
-    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net'
+    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net/'
     
 ]
 
