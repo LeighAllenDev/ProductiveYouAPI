@@ -122,7 +122,7 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 CSRF_TRUSTED_ORIGINS = [
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
-    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net/'
+    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
     
 ]
 
