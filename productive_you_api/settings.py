@@ -6,17 +6,17 @@ from corsheaders.defaults import default_headers
 if os.path.exists('env.py'):
     import env
 
+# Define BASE_DIR before using it
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Cloudinary Storage
 CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
 }
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# REST Framework and JWT Settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
@@ -40,23 +40,17 @@ JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
 JWT_AUTH_SAMESITE = 'None'
 REST_SESSION_LOGIN = False
 
-# Cookies
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_DOMAIN = 'productive-you-api-d9afbaf8a80b.herokuapp.com'
 
-# Serializer
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'productive_you_api.serializers.CurrentUserSerializer'
 }
 
-# Security and Debug
+
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = 'DEV' in os.environ
 
-# Allowed Hosts
 ALLOWED_HOSTS = [
     'productive-you-api-d9afbaf8a80b.herokuapp.com',
     'localhost',
@@ -65,10 +59,9 @@ ALLOWED_HOSTS = [
     'django-productiveyou-ad47263ebaed.herokuapp.com',
     '8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
     'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
-    '8000-leighallend-productivey-ekms8xyqa6y.ws.codeinstitute-ide.net',
+    '8000-leighallend-productivey-ekms8xyqa6y.ws.codeinstitute-ide.net'
 ]
 
-# Installed Apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -95,7 +88,6 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
-# Middleware
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -107,7 +99,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# CORS Settings
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_DOMAIN = 'productive-you-api-d9afbaf8a80b.herokuapp.com'
+
 CORS_ALLOWED_ORIGINS = [
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://django-productiveyou-ad47263ebaed.herokuapp.com',
@@ -115,14 +110,26 @@ CORS_ALLOWED_ORIGINS = [
     'https://8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
     'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net'
 ]
+
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = list(default_headers) + ['Content-Type', 'Authorization', 'X-CSRFToken']
-CSRF_TRUSTED_ORIGINS = [
-    'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
-    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'Content-Type',
+    'Authorization',
+    'X-CSRFToken',
 ]
 
-# Templates
+CSRF_TRUSTED_ORIGINS = [
+    'https://3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
+    'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
+    'https://react-productive-you-bad00f997bac.herokuapp.com',
+    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net'
+    
+]
+
+
+ROOT_URLCONF = 'productive_you_api.urls'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -139,10 +146,8 @@ TEMPLATES = [
     },
 ]
 
-# WSGI
 WSGI_APPLICATION = 'productive_you_api.wsgi.application'
 
-# Database
 if 'DEV' in os.environ:
     DATABASES = {
         'default': {
@@ -151,9 +156,10 @@ if 'DEV' in os.environ:
         }
     }
 else:
-    DATABASES = {'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))}
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    }
 
-# Password Validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -161,14 +167,18 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Static and Media Files
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
 STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
