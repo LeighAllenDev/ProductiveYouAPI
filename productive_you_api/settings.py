@@ -6,50 +6,10 @@ from corsheaders.defaults import default_headers
 if os.path.exists('env.py'):
     import env
 
-# Base directory
+# Base Directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Cloudinary Storage
-CLOUDINARY_STORAGE = {
-    'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
-}
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# Django Rest Framework Settings
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-    ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-    'DATETIME_FORMAT': '%d %b %Y',
-}
-
-if 'DEV' not in os.environ:
-    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = [
-        'rest_framework.renderers.JSONRenderer',
-    ]
-
-REST_USE_JWT = True
-JWT_AUTH_SECURE = True
-JWT_AUTH_COOKIE = 'my-app-auth'
-JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
-JWT_AUTH_SAMESITE = 'None'
-REST_SESSION_LOGIN = False
-
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_SAMESITE = 'None'
-
-REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'productive_you_api.serializers.CurrentUserSerializer'
-}
-
-# Security and Debug
+# Security Settings
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = 'DEV' in os.environ
 
@@ -61,8 +21,7 @@ ALLOWED_HOSTS = [
     'django-productiveyou-ad47263ebaed.herokuapp.com',
     '8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
     'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
-    '8000-leighallend-productivey-ekms8xyqa6y.ws.codeinstitute-ide.net',
-    'http://localhost:3000'
+    'http://localhost:3000',
 ]
 
 # Installed Apps
@@ -84,7 +43,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'dj_rest_auth.registration',
     'corsheaders',
-
     'profiles',
     'tasks',
     'teams',
@@ -105,7 +63,7 @@ MIDDLEWARE = [
 ]
 
 # CSRF and CORS Settings
-CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_DOMAIN = 'productive-you-api-d9afbaf8a80b.herokuapp.com'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -120,20 +78,53 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    'Content-Type',
-    'Authorization',
-    'X-CSRFToken',
-]
+CORS_ALLOW_HEADERS = list(default_headers) + ['Content-Type', 'Authorization', 'X-CSRFToken']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://3000-leighallend-productivey-5rpfnq7ldhc.ws.codeinstitute-ide.net',
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
     'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
     'http://localhost:3000'
 ]
+
+# Django Rest Framework Settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DATETIME_FORMAT': '%d %b %Y',
+}
+
+if 'DEV' not in os.environ:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = ['rest_framework.renderers.JSONRenderer']
+
+REST_USE_JWT = True
+JWT_AUTH_SECURE = True
+JWT_AUTH_COOKIE = 'my-app-auth'
+JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
+JWT_AUTH_SAMESITE = 'None'
+REST_SESSION_LOGIN = False
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'productive_you_api.serializers.CurrentUserSerializer'
+}
+
+# Database Configuration
+if 'DEV' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    DATABASES = {'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))}
 
 # URLs and Templates
 ROOT_URLCONF = 'productive_you_api.urls'
@@ -156,19 +147,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'productive_you_api.wsgi.application'
 
-# Database Configuration
-if 'DEV' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-else:
-    DATABASES = {
-        'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
-    }
-
 # Password Validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -187,10 +165,26 @@ USE_TZ = True
 # Static and Media Files
 STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
-
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Logging Configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'django': {
+        'handlers': ['console'],
+        'level': 'INFO',
+        'propagate': False,
+    },
+}
