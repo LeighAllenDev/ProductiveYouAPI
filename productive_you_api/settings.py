@@ -6,10 +6,8 @@ from corsheaders.defaults import default_headers
 if os.path.exists('env.py'):
     import env
 
-# Base Directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Security Settings
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = 'DEV' in os.environ
 
@@ -24,7 +22,6 @@ ALLOWED_HOSTS = [
     'http://localhost:3000',
 ]
 
-# Installed Apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -50,7 +47,6 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
-# Middleware
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -62,7 +58,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# CSRF and CORS Settings
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_DOMAIN = 'productive-you-api-d9afbaf8a80b.herokuapp.com'
@@ -87,7 +82,6 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000'
 ]
 
-# Django Rest Framework Settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
