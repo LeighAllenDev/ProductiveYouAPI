@@ -9,7 +9,7 @@ if os.path.exists('env.py'):
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-DEBUG = 'DEV' in os.environ
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'productive-you-api-d9afbaf8a80b.herokuapp.com',
@@ -19,7 +19,7 @@ ALLOWED_HOSTS = [
     'django-productiveyou-ad47263ebaed.herokuapp.com',
     '8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
     'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
-    'http://localhost:3000',
+    'https://localhost:3000',
 ]
 
 INSTALLED_APPS = [
