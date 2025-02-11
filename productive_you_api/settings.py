@@ -72,7 +72,8 @@ CORS_ALLOWED_ORIGINS = [
     'https://react-productive-you-bad00f997bac.herokuapp.com',
     'https://8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
     'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
-    'https://localhost:3000'
+    'https://localhost:3000',
+    'http://localhost:3000'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -82,7 +83,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
     'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
-    'https://localhost:3000/'
+    'https://localhost:3000/',
+    'http://localhost:3000/'
 ]
 
 REST_FRAMEWORK = {
