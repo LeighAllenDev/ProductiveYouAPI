@@ -80,7 +80,7 @@ CORS_ALLOW_HEADERS = list(default_headers) + ['Content-Type', 'Authorization', '
 
 CSRF_TRUSTED_ORIGINS = [
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
-    'https://react-productive-you-bad00f997bac.herokuapp.com',
+    'https://react-productive-you-bad00f997bac.herokuapp.com/',
     'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
     'https://localhost:3000/',
     'http://localhost:3000/'
