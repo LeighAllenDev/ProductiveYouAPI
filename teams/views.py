@@ -62,11 +62,14 @@ class TeamJoinView(APIView):
         try:
             team = Team.objects.get(pk=pk)
         except Team.DoesNotExist:
-            raise Http404
+            return Response({'detail': 'Team not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-        profile = request.user.profile
+        profile = Profile.objects.filter(owner=request.user).first()
 
-        if profile in team.users.all():
+        if not profile:
+            return Response({'detail': 'User profile not found.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if team.users.filter(id=profile.id).exists():
             return Response({'detail': 'You are already a member of this team.'}, status=status.HTTP_400_BAD_REQUEST)
 
         team.users.add(profile)
