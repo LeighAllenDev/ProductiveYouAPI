@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
 from .models import Team
 from .serializers import TeamSerializer
+from profiles.models import Profile
 
 class TeamListCreateView(APIView):
     permission_classes = [IsAuthenticated]
