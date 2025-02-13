@@ -22,7 +22,7 @@ class Task(models.Model):
     completed = models.BooleanField(default=False)
     due_date = models.DateField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    files = models.ManyToManyField(TaskFile, related_name='tasks', blank=True)
+    files = models.ManyToManyField(TaskFile, related_name='task_files', blank=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='tasks', null=True, blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
