@@ -70,8 +70,6 @@ CSRF_COOKIE_HTTPONLY = False
 CORS_ALLOWED_ORIGINS = [
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
     'https://react-productive-you-bad00f997bac.herokuapp.com',
-    'https://8000-leighallend-productivey-243hk493xv0.ws.codeinstitute-ide.net',
-    'https://3000-leighallend-reactproduc-99krna7t8oj.ws.codeinstitute-ide.net',
     'https://localhost:3000',
     'http://localhost:3000'
 ]
@@ -127,11 +125,10 @@ else:
 
 # Media settings
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 if 'USE_CLOUDINARY' in os.environ:
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-else:
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # URLs and Templates
 ROOT_URLCONF = 'productive_you_api.urls'
