@@ -65,6 +65,7 @@ if DEBUG:
 else:
     CSRF_COOKIE_DOMAIN = 'productive-you-api-d9afbaf8a80b.herokuapp.com'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_COOKIE_HTTPONLY = False
 
 CORS_ALLOWED_ORIGINS = [
     'https://productive-you-api-d9afbaf8a80b.herokuapp.com',
@@ -123,6 +124,14 @@ if 'DEV' in os.environ:
     }
 else:
     DATABASES = {'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))}
+
+# Media settings
+MEDIA_URL = '/media/'
+
+if 'USE_CLOUDINARY' in os.environ:
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # URLs and Templates
 ROOT_URLCONF = 'productive_you_api.urls'

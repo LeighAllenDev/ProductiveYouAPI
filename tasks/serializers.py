@@ -4,9 +4,15 @@ from teams.models import Team
 from teams.serializers import TeamSerializer
 
 class TaskFileSerializer(serializers.ModelSerializer):
+    file_url = serializers.SerializerMethodField()
+
     class Meta:
         model = TaskFile
-        fields = ['id', 'file', 'uploaded_at']
+        fields = ['id', 'file', 'file_url', 'uploaded_at']
+
+    def get_file_url(self, obj):
+        request = self.context.get('request')
+        return request.build_absolute_uri(obj.file.url) if request else f"{settings.MEDIA_URL}{obj.file}"
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,7 +21,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.id')
-    files = TaskFileSerializer(many=True, read_only=True)
+    task_files = TaskFileSerializer(many=True, read_only=True, source="files")
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), required=True)
     team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), required=True)
 
@@ -23,12 +29,13 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = [
             'id', 'task_name', 'description', 'is_urgent', 'completed',
-            'due_date', 'category', 'files', 'team', 'owner'
+            'due_date', 'category', 'task_files', 'team', 'owner'
         ]
 
     def to_representation(self, instance):
         """
-        Override to_representation to serialize category and team using their respective serializers.
+        Override to_representation to serialize category and team using their 
+        respective serializers.
         """
         representation = super().to_representation(instance)
         request = self.context.get('request')

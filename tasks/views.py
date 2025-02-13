@@ -31,7 +31,10 @@ class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TaskSerializer
 
     def update(self, request, *args, **kwargs):
-        """Override to allow marking tasks as complete/incomplete only for team members."""
+        """
+        Override to allow marking tasks as complete/incomplete only
+        for team members.
+        """
         instance = self.get_object()
 
         if instance.team and request.user.profile in instance.team.users.all():
